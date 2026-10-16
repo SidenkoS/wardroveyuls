@@ -1,930 +1,2575 @@
 <!DOCTYPE html>
+
 <html lang="ru">
+
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Капсула гардероба</title>
+
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        * {
+
+            margin: 0;
+
+            padding: 0;
+
+            box-sizing: border-box;
+
+        }
+
+ 
 
         body {
+
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
             background: #f5f5f5;
+
             padding-bottom: 70px;
+
         }
+
+ 
 
         .header {
+
             background: white;
+
             padding: 15px 20px;
+
             font-size: 20px;
+
             font-weight: bold;
+
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+
             position: sticky;
+
             top: 0;
+
             z-index: 100;
+
         }
+
+ 
 
         .stats {
+
             display: flex;
+
             gap: 10px;
+
             padding: 15px;
+
         }
+
+ 
 
         .stat-card {
-            flex: 1;
-            background: white;
-            border-radius: 12px;
-            padding: 15px;
-            text-align: center;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+
+            big card styles
+
         }
+
+ 
+
+        .stat-card {
+
+            flex: 1;
+
+            background: white;
+
+            border-radius: 12px;
+
+            padding: 15px;
+
+            text-align: center;
+
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+
+        }
+
+ 
 
         .stat-card .number {
+
             font-size: 28px;
+
             font-weight: bold;
+
             color: #6C5CE7;
+
         }
+
+ 
 
         .stat-card .label {
+
             font-size: 12px;
+
             color: #888;
+
             margin-top: 4px;
+
         }
 
-        .page { display: none; }
-        .page.active { display: block; }
+ 
+
+        .page {
+
+            display: none;
+
+        }
+
+ 
+
+        .page.active {
+
+            display: block;
+
+        }
+
+ 
 
         .item-card {
+
             background: white;
+
             border-radius: 12px;
+
             margin: 8px 15px;
+
             padding: 12px;
+
             display: flex;
+
             gap: 12px;
+
             align-items: center;
+
             box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+
         }
+
+ 
 
         .item-card img,
+
         .item-card .no-photo {
+
             width: 70px;
+
             height: 70px;
+
             border-radius: 8px;
+
             object-fit: cover;
+
             background: #eee;
+
             flex-shrink: 0;
+
         }
 
-        .item-info { flex: 1; }
-        .item-info .name { font-weight: bold; font-size: 15px; }
-        .item-info .meta { font-size: 12px; color: #888; margin-top: 2px; }
+ 
+
+        .item-info {
+
+            flex: 1;
+
+        }
+
+ 
+
+        .item-info .name {
+
+            font-weight: bold;
+
+            font-size: 15px;
+
+        }
+
+ 
+
+        .item-info .meta {
+
+            font-size: 12px;
+
+            color: #888;
+
+            margin-top: 2px;
+
+        }
+
+ 
 
         .btn-delete {
-            background: #ff4757;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            padding: 6px 12px;
-            font-size: 12px;
-            cursor: pointer;
+
+            background: #phone icon for delete button
+
         }
+
+ 
+
+        .btn-delete {
+
+            background: #ff4757;
+
+            color: white;
+
+            border: none;
+
+            border-radius: 8px;
+
+            padding: 6px 12px;
+
+            font-size: 12px;
+
+            cursor: pointer;
+
+        }
+
+ 
 
         .btn-save {
+
             width: 100%;
+
             padding: 14px;
+
             background: #6C5CE7;
+
             color: white;
+
             border: none;
+
             border-radius: 12px;
+
             font-size: 16px;
+
             font-weight: bold;
+
             cursor: pointer;
+
             margin-top: 10px;
+
         }
+
+ 
 
         .btn-close {
+
             width: 100%;
+
             padding: 12px;
+
             background: #eee;
+
             border: none;
+
             border-radius: 12px;
+
             font-size: 15px;
+
             cursor: pointer;
+
             margin-top: 8px;
+
         }
+
+ 
 
         .fab {
+
             position: fixed;
+
             bottom: 80px;
+
             right: 20px;
+
             width: 56px;
+
             height: 56px;
+
             background: #6C5CE7;
+
             color: white;
+
             border: none;
+
             border-radius: 50%;
+
             font-size: 28px;
+
             box-shadow: 0 4px 12px rgba(108,92,231,0.4);
+
             cursor: pointer;
+
             z-index: 100;
+
         }
+
+ 
 
         .bottom-nav {
+
             position: fixed;
+
             bottom: 0;
+
             left: 0;
+
             right: 0;
+
             background: white;
+
             display: flex;
+
             box-shadow: 0 -2px 4px rgba(0,0,0,0.1);
+
             z-index: 100;
+
         }
+
+ 
 
         .bottom-nav button {
+
             flex: 1;
+
             padding: 12px 0;
+
             border: none;
+
             background: none;
+
             font-size: 20px;
+
             cursor: pointer;
+
             color: #888;
+
         }
 
-        .bottom-nav button.active { color: #6C5CE7; }
-        .bottom-nav .nav-label { font-size: 10px; display: block; margin-top: 2px; }
+ 
+
+        .bottom-nav button.active {
+
+            color: #6C5CE7;
+
+        }
+
+ 
+
+        .bottom-nav .nav-label {
+
+            font-size: 10px;
+
+            display: block;
+
+            margin-top: 2px;
+
+        }
+
+ 
 
         .modal {
+
             display: none;
+
             position: fixed;
+
             top: 0;
+
             left: 0;
+
             right: 0;
+
             bottom: 0;
+
             background: rgba(0,0,0,0.5);
+
             z-index: 200;
+
             overflow-y: auto;
+
         }
 
-        .modal.show { display: block; }
+ 
+
+        .modal.show {
+
+            display: block;
+
+        }
+
+ 
 
         .modal-content {
+
             background: white;
+
             margin: 30px 15px;
+
             border-radius: 16px;
+
             padding: 20px;
+
         }
 
-        .modal-content h2 { margin-bottom: 15px; }
+ 
 
-        .form-group { margin-bottom: 12px; }
+        .modal-content h2 {
+
+            margin-bottom: 15px;
+
+        }
+
+ 
+
+        .form-group {
+
+            margin-bottom: 12px;
+
+        }
+
+ 
 
         .form-group label {
+
             display: block;
+
             font-size: 13px;
+
             color: #666;
+
             margin-bottom: 4px;
+
         }
+
+ 
 
         .form-group input,
+
         .form-group select,
+
         .form-group textarea {
+
             width: 100%;
+
             padding: 10px;
+
             border: 1px solid #ddd;
+
             border-radius: 8px;
+
             font-size: 15px;
+
         }
 
-        .form-group textarea { height: 60px; resize: vertical; }
+ 
+
+        .form-group textarea {
+
+            height: 60px;
+
+            resize: vertical;
+
+        }
+
+ 
 
         .checkbox-group {
+
             display: flex;
+
             flex-wrap: wrap;
+
             gap: 8px;
+
         }
+
+ 
 
         .checkbox-group label {
+
             display: flex;
+
             align-items: center;
+
             gap: 4px;
+
             padding: 6px 12px;
+
             background: #f0edff;
+
             border-radius: 20px;
+
             font-size: 13px;
+
             cursor: pointer;
+
         }
 
-        .checkbox-group input[type="checkbox"] { width: auto; }
+ 
+
+        .checkbox-group input[type="checkbox"] {
+
+            width: auto;
+
+        }
+
+ 
 
         .empty {
+
             text-align: center;
+
             padding: 40px 20px;
+
             color: #888;
+
         }
 
-        .empty .icon { font-size: 50px; margin-bottom: 10px; }
+ 
+
+        .empty .icon {
+
+            font-size: 50px;
+
+            margin-bottom: 10px;
+
+        }
+
+ 
 
         .capsule-card {
+
             background: white;
+
             border-radius: 12px;
+
             margin: 8px 15px;
+
             padding: 15px;
+
             box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+
         }
 
-        .capsule-card .title { font-weight: bold; font-size: 16px; }
-        .capsule-card .meta { font-size: 12px; color: #888; margin: 4px 0 8px; }
-        .capsule-items { font-size: 13px; color: #555; }
-        .capsule-items div { padding: 2px 0; }
+ 
+
+        .capsule-card .title {
+
+            font-weight: bold;
+
+            font-size: 16px;
+
+        }
+
+ 
+
+        .capsule-card .meta {
+
+            font-size:  12px;
+
+            color: #888;
+
+            margin: 4px 0 8px;
+
+        }
+
+ 
+
+        .capsule-items {
+
+            font-size: 13px;
+
+            color: #555;
+
+        }
+
+ 
+
+        .capsule-items div {
+
+            padding: 2px 0;
+
+        }
+
+ 
 
         .section-title {
+
             padding: 15px 20px 10px;
+
             font-size: 16px;
+
             font-weight: bold;
+
         }
+
+ 
 
         .filters {
+
             display: flex;
+
             gap: 8px;
+
             padding: 10px 15px;
+
             overflow-x: auto;
+
         }
+
+ 
 
         .filter-chip {
+
             padding: 6px 14px;
+
             background: #e8e8e8;
+
             border-radius: 20px;
+
             font-size: 12px;
+
             cursor: pointer;
+
             white-space: nowrap;
+
             border: none;
+
         }
 
-        .filter-chip.active { background: #6C5CE7; color: white; }
+ 
 
-        .search-box { padding: 0 15px 10px; }
+        .filter-chip.active {
+
+            background: #6C5CE7;
+
+            color: white;
+
+        }
+
+ 
+
+        .search-box {
+
+            padding: 0 15px 10px;
+
+        }
+
+ 
 
         .search-box input {
+
             width: 100%;
+
             padding: 10px 15px;
+
             border: 1px solid #ddd;
+
             border-radius: 20px;
+
             font-size: 14px;
+
         }
+
+ 
 
         .photo-preview {
+
             max-width: 200px;
+
             max-height: 200px;
+
             border-radius: 12px;
+
             margin: 10px 0;
+
         }
+
+ 
 
         .color-wheel {
+
             display: flex;
+
             flex-wrap: wrap;
+
             gap: 6px;
+
             justify-content: center;
+
         }
+
+ 
 
         .achromatic-row {
+
             display: flex;
+
             gap: 6px;
+
             justify-content: center;
+
             margin: 8px 0;
+
             padding: 8px;
+
             background: #f9f9f9;
+
             border-radius: 12px;
+
         }
+
+ 
 
         .achromatic-label {
+
             font-size: 12px;
+
             color: #888;
+
             text-align: center;
+
             margin: 4px 0;
+
         }
+
+ 
 
         .auto-capsule {
+
             background: white;
+
             border-radius: 16px;
+
             margin: 15px;
+
             padding: 20px;
+
             box-shadow: 0 4px 15px rgba(108,92,231,0.15);
+
             border: 2px solid #6C5CE7;
+
         }
+
+ 
 
         .auto-capsule h3 {
+
             color: #6C5CE7;
+
             margin-bottom: 8px;
+
             font-size: 18px;
+
         }
+
+ 
 
         .harmony-name {
+
             display: inline-block;
+
             background: #f0edff;
+
             color: #6C5CE7;
+
             padding: 4px 12px;
+
             border-radius: 20px;
+
             font-size: 13px;
+
             font-weight: bold;
+
             margin: 4px 0;
+
         }
+
+ 
 
         .reason {
+
             background: #f9f6ff;
+
             padding: 12px;
+
             border-radius: 8px;
+
             font-size: 13px;
+
             color: #555;
+
             margin: 10px 0;
+
             line-height: 1.5;
+
         }
+
+ 
 
         .item-row {
+
             display: flex;
+
             align-items: center;
+
             gap: 10px;
+
             padding: 8px 0;
+
             border-bottom: 1px solid #f0f0f0;
+
         }
+
+ 
 
         .item-row img,
+
         .item-row .no-photo {
+
             width: 50px;
+
             height: 50px;
+
             border-radius: 8px;
+
             object-fit: cover;
+
             background: #eee;
+
             flex-shrink: 0;
+
         }
 
-        .item-row .info { flex: 1; }
-        .item-row .info .n { font-weight: bold; font-size: 14px; }
-        .item-row .info .m { font-size: 11px; color: #888; }
+ 
+
+        .item-row .info {
+
+            flex: 1;
+
+        }
+
+ 
+
+        .item-row .info .n {
+
+            font-weight: bold;
+
+            font-size: 14px;
+
+        }
+
+ 
+
+        .item-row .info .m {
+
+            font-size: 11px;
+
+            color: #888;
+
+        }
+
+ 
 
         .buttons {
+
             display: flex;
+
             gap: 10px;
+
             margin-top: 15px;
+
         }
+
+ 
 
         .buttons button {
+
             flex: 1;
+
             padding: 12px;
+
             border: none;
+
             border-radius: 12px;
+
             font-size: 15px;
+
             font-weight: bold;
+
             cursor: pointer;
+
         }
 
-        .btn-save-auto { background: #6C5CE7; color: white; }
-        .btn-regen { background: #eee; color: #333; }
+ 
+
+        .btn-save-auto {
+
+            background: #6C5CE7;
+
+            color: white;
+
+        }
+
+ 
+
+        .btn-regen {
+
+            background: #eee;
+
+            color: #333;
+
+        }
+
+ 
 
         .auto-settings {
+
             background: white;
+
             border-radius: 12px;
+
             margin: 15px;
+
             padding: 15px;
+
         }
+
+ 
 
         .auto-settings label {
+
             font-size: 13px;
+
             color: #666;
+
             margin-bottom: 4px;
+
             display: block;
+
         }
+
+ 
 
         .auto-settings select {
+
             width: 100%;
+
             padding: 10px;
+
             border: 1px solid #ddd;
+
             border-radius: 8px;
+
             font-size: 15px;
+
             margin-bottom: 10px;
+
         }
+
+ 
 
         .btn-auto {
+
             display: block;
+
             padding: 16px;
+
             background: linear-gradient(135deg, #6C5CE7, #a855f7);
+
             color: white;
+
             border: none;
+
             border-radius: 12px;
+
             font-size: 18px;
+
             font-weight: bold;
+
             cursor: pointer;
+
             margin: 10px 15px;
+
             width: calc(100% - 30px);
+
             box-shadow: 0 4px 15px rgba(108,92,231,0.3);
+
         }
 
-        .btn-auto:active { transform: scale(0.98); }
+ 
+
+        .btn-auto:active {
+
+            transform: scale(0.98);
+
+        }
+
+ 
 
         .color-preview-box {
+
             display: flex;
+
             align-items: center;
+
             gap: 8px;
+
             margin-top: 6px;
+
         }
 
+ 
+
         .color-preview-box .dot {
+
             width: 30px;
+
             height: 30px;
+
             border-radius: 50%;
+
             border: 2px solid #ddd;
+
         }
+
     </style>
+
 </head>
+
 <body>
+
+ 
 
     <div class="header">👗 Капсула гардероба</div>
 
+ 
+
     <!-- ГЛАВНАЯ -->
+
     <div class="page active" id="page-home">
+
         <div class="stats">
+
             <div class="stat-card">
+
                 <div class="number" id="statItems">0</div>
+
                 <div class="label">👕 Вещей</div>
+
             </div>
+
             <div class="stat-card">
+
                 <div class="number" id="statCapsules">0</div>
+
                 <div class="label">🎁 Капсул</div>
+
             </div>
+
             <div class="stat-card">
+
                 <div class="number" id="statCategories">0</div>
+
                 <div class="label">📂 Категорий</div>
+
             </div>
+
         </div>
+
+ 
 
         <div class="section-title">🎨 Цветовой круг Иттена</div>
+
         <div style="padding: 0 15px;">
+
             <div class="color-wheel" id="colorWheel"></div>
+
             <div class="achromatic-label">Ахроматические цвета</div>
+
             <div class="achromatic-row" id="achromaticRow"></div>
+
         </div>
+
+ 
 
         <div class="section-title">🕐 Последние добавленные</div>
+
         <div id="recentItems"></div>
+
     </div>
+
+ 
 
     <!-- ГАРДЕРОБ -->
+
     <div class="page" id="page-wardrobe">
+
         <div class="filters">
+
             <button class="filter-chip active" onclick="filterByCategory('Все', this)">Все</button>
+
             <button class="filter-chip" onclick="filterByCategory('Верх', this)">👕 Верх</button>
+
             <button class="filter-chip" onclick="filterByCategory('Низ', this)">👖 Низ</button>
+
             <button class="filter-chip" onclick="filterByCategory('Платье', this)">👗 Платье</button>
+
             <button class="filter-chip" onclick="filterByCategory('Верхняя одежда', this)">🧥 Верхняя</button>
+
             <button class="filter-chip" onclick="filterByCategory('Обувь', this)">👟 Обувь</button>
+
             <button class="filter-chip" onclick="filterByCategory('Аксессуар', this)">👜 Аксессуар</button>
+
         </div>
+
+ 
+
         <div class="search-box">
+
             <input type="text" id="searchInput" placeholder="🔍 Поиск вещей..." oninput="renderItems()">
+
         </div>
+
+ 
+
         <div id="itemsList"></div>
+
     </div>
+
+ 
 
     <!-- КАПСУЛЫ -->
+
     <div class="page" id="page-capsules">
+
         <div class="section-title">🤖 Автоподбор капсулы</div>
 
+ 
+
         <div class="auto-settings">
+
             <label>🌤 Сезон</label>
+
             <select id="autoSeason">
+
                 <option>Весна</option>
+
                 <option selected>Лето</option>
+
                 <option>Осень</option>
+
                 <option>Зима</option>
+
                 <option>Всесезонная</option>
+
             </select>
+
+ 
+
             <label>🎨 Принцип сочетания цветов (Иттен)</label>
+
             <select id="autoHarmony">
+
                 <option value="complementary">🔴 Комплементарный (противоположные)</option>
+
                 <option value="analogous">🟡 Аналогичный (соседние)</option>
+
                 <option value="triadic">🔵 Триада</option>
+
                 <option value="split">🟣 Расщеплённый комплементарный</option>
+
                 <option value="monochrome">⚪ Монохром (один цвет)</option>
+
                 <option value="achromatic">⚫ Ахроматический (без цвета)</option>
+
                 <option value="warm">🔥 Тёплая гамма</option>
+
                 <option value="cold">❄️ Холодная гамма</option>
+
                 <option value="random">🎲 Случайный принцип</option>
+
             </select>
+
+ 
+
             <label>📦 Количество вещей</label>
+
             <select id="autoCount">
+
                 <option>5</option>
+
                 <option selected>7</option>
+
                 <option>10</option>
+
             </select>
+
         </div>
 
+ 
+
         <button class="btn-auto" onclick="generateAutoCapsule()">🤖 Собрать капсулу автоматически</button>
+
         <div id="autoResult"></div>
 
+ 
+
         <div class="section-title">🎁 Мои капсулы</div>
+
         <div id="capsulesList"></div>
+
     </div>
+
+ 
 
     <button class="fab" onclick="showAdd()">+</button>
 
+ 
+
     <div class="bottom-nav">
+
         <button class="active" onclick="showPage('home', this)">🏠 <span class="nav-label">Главная</span></button>
+
         <button onclick="showPage('wardrobe', this)">👕 <span class="nav-label">Гардероб</span></button>
+
         <button onclick="showPage('capsules', this)">🎁 <span class="nav-label">Капсулы</span></button>
+
     </div>
+
+ 
 
     <!-- МОДАЛКА: ВЕЩЬ -->
+
     <div class="modal" id="modalAddItem">
+
         <div class="modal-content">
+
             <h2>👕 Новая вещь</h2>
+
             <div class="form-group">
+
                 <label>📷 Фото</label>
+
                 <input type="file" id="itemPhoto" accept="image/*">
+
                 <img id="photoPreview" class="photo-preview" style="display:none;">
+
             </div>
+
             <div class="form-group">
+
                 <label>Название *</label>
+
                 <input type="text" id="itemName" placeholder="Например: Белая футболка">
+
             </div>
+
             <div class="form-group">
+
                 <label>Категория</label>
+
                 <select id="itemCategory">
+
                     <option>Верх</option>
+
                     <option>Низ</option>
+
                     <option>Платье</option>
+
                     <option>Верхняя одежда</option>
+
                     <option>Обувь</option>
+
                     <option>Аксессуар</option>
+
                 </select>
+
             </div>
+
             <div class="form-group">
+
                 <label>🎨 Цвет (круг Иттена)</label>
+
                 <select id="itemColor">
+
                     <optgroup label="🔴 Хроматические">
+
                         <option value="red">Красный</option>
+
                         <option value="vermilion">Красно-оранжевый</option>
+
                         <option value="orange">Оранжевый</option>
+
                         <option value="amber">Жёлто-оранжевый</option>
+
                         <option value="yellow">Жёлтый</option>
+
                         <option value="chartreuse">Жёлто-зелёный</option>
+
                         <option value="green">Зелёный</option>
+
                         <option value="teal">Сине-зелёный</option>
+
                         <option value="azure">Голубой</option>
+
                         <option value="blue">Синий</option>
+
                         <option value="violet">Фиолетовый</option>
+
                         <option value="magenta">Красно-фиолетовый</option>
+
                     </optgroup>
+
                     <optgroup label="⚫ Ахроматические">
+
                         <option value="black">Чёрный</option>
+
                         <option value="white">Белый</option>
+
                         <option value="gray">Серый</option>
+
                         <option value="beige">Бежевый</option>
+
                         <option value="brown">Коричневый</option>
+
                     </optgroup>
+
                 </select>
+
                 <div id="colorPreviewBox" class="color-preview-box"></div>
+
             </div>
+
             <div class="form-group">
+
                 <label>Сезон</label>
+
                 <div class="checkbox-group" id="seasonsGroup">
+
                     <label><input type="checkbox" value="Весна"> 🌸 Весна</label>
+
                     <label><input type="checkbox" value="Лето"> ☀️ Лето</label>
+
                     <label><input type="checkbox" value="Осень"> 🍂 Осень</label>
+
                     <label><input type="checkbox" value="Зима"> ❄️ Зима</label>
+
                 </div>
+
             </div>
+
             <div class="form-group">
+
                 <label>Описание</label>
+
                 <textarea id="itemDesc" placeholder="Заметки о вещи..."></textarea>
+
             </div>
+
             <button class="btn-save" onclick="saveItem()">💾 Сохранить вещь</button>
+
             <button class="btn-close" onclick="closeAddItem()">Отмена</button>
+
         </div>
+
     </div>
+
+ 
 
     <!-- МОДАЛКА: КАПСУЛА -->
+
     <div class="modal" id="modalAddCapsule">
+
         <div class="modal-content">
+
             <h2>🎁 Новая капсула</h2>
+
             <div class="form-group">
+
                 <label>Название *</label>
+
                 <input type="text" id="capName" placeholder="Например: Летний casual">
+
             </div>
+
             <div class="form-group">
+
                 <label>Сезон</label>
+
                 <select id="capSeason">
+
                     <option>Весна</option>
+
                     <option>Лето</option>
+
                     <option>Осень</option>
+
                     <option>Зима</option>
+
                     <option>Всесезонная</option>
+
                 </select>
+
             </div>
+
             <div class="form-group">
+
                 <label>Выберите вещи</label>
+
                 <div id="capItemsList"></div>
+
             </div>
+
             <button class="btn-save" onclick="saveCapsule()">💾 Создать капсулу</button>
+
             <button class="btn-close" onclick="closeAddCapsule()">Отмена</button>
+
         </div>
+
     </div>
 
+ 
+
     <script>
+
+        // ====== ЦВЕТА ИТТЕНА ======
+
         var ITTEN_WHEEL = [
+
             {key:'red',name:'Красный',hue:0,sat:80,light:50},
+
             {key:'vermilion',name:'Красно-оранжевый',hue:20,sat:80,light:52},
+
             {key:'orange',name:'Оранжевый',hue:35,sat:85,light:55},
+
             {key:'amber',name:'Жёлто-оранжевый',hue:45,sat:85,light:58},
+
             {key:'yellow',name:'Жёлтый',hue:55,sat:90,light:60},
+
             {key:'chartreuse',name:'Жёлто-зелёный',hue:80,sat:70,light:55},
+
             {key:'green',name:'Зелёный',hue:120,sat:60,light:45},
+
             {key:'teal',name:'Сине-зелёный',hue:175,sat:60,light:45},
+
             {key:'azure',name:'Голубой',hue:210,sat:70,light:55},
+
             {key:'blue',name:'Синий',hue:240,sat:70,light:50},
+
             {key:'violet',name:'Фиолетовый',hue:275,sat:65,light:50},
+
             {key:'magenta',name:'Красно-фиолетовый',hue:320,sat:70,light:52}
+
         ];
 
+ 
+
         var ACHROMATIC = [
+
             {key:'black',name:'Чёрный',hue:0,sat:0,light:10},
+
             {key:'white',name:'Белый',hue:0,sat:0,light:95},
+
             {key:'gray',name:'Серый',hue:0,sat:0,light:55},
+
             {key:'beige',name:'Бежевый',hue:35,sat:25,light:80},
+
             {key:'brown',name:'Коричневый',hue:25,sat:45,light:35}
+
         ];
+
+ 
 
         var ALL_COLORS = ITTEN_WHEEL.concat(ACHROMATIC);
 
+ 
+
         function getColorByKey(key) {
-            for (var i=0;i<ALL_COLORS.length;i++) {
-                if (ALL_COLORS[i].key===key) return ALL_COLORS[i];
+
+            for (var i = 0; i < ALL_COLORS.length; i++) {
+
+                if (ALL_COLORS[i].key === key) return ALL_COLORS[i];
+
             }
+
             return ALL_COLORS[0];
+
         }
+
+ 
 
         function colorToCSS(c) {
-            return 'hsl('+c.hue+','+c.sat+'%,'+c.light+'%)';
+
+            return 'hsl(' + c.hue + ',' + c.sat + '%,' + c.light + '%)';
+
         }
+
+ 
 
         function isAchromatic(key) {
-            return ['black','white','gray','beige','brown'].indexOf(key)!==-1;
+
+            return ['black','white','gray','beige','brown'].indexOf(key) !== -1;
+
         }
+
+ 
+
+        // ====== ГАРМОНИЯ ИТТЕНА ======
 
         function getHarmonyColors(baseKey, type) {
+
             var base = getColorByKey(baseKey);
+
+ 
+
             if (isAchromatic(baseKey)) {
-                var accent = ITTEN_WHEEL[Math.floor(Math.random()*ITTEN_WHEEL.length)];
-                return {type:'Ахроматический + акцент',description:'Ахроматические + акцент ('+accent.name+')',colors:[base,accent]};
+
+                var accent = ITTEN_WHEEL[Math.floor(Math.random() * ITTEN_WHEEL.length)];
+
+                return {
+
+                    type: 'Ахроматический + акцент',
+
+                    description: 'Ахроматические + акцент (' + accent.name + ')',
+
+                    colors: [base, accent]
+
+                };
+
             }
+
+ 
+
             var idx = 0;
-            for (var i=0;i<ITTEN_WHEEL.length;i++) {
-                if (ITTEN_WHEEL[i].key===baseKey) {idx=i;break;}
+
+            for (var i = 0; i < ITTEN_WHEEL.length; i++) {
+
+                if (ITTEN_WHEEL[i].key === baseKey) { idx = i; break; }
+
             }
-            var r,t,d;
-            switch(type) {
+
+ 
+
+            var r, t, d;
+
+ 
+
+            switch (type) {
+
                 case 'complementary':
-                    r=[ITTEN_WHEEL[idx],ITTEN_WHEEL[(idx+6)%12]];
-                    t='Комплементарный';
-                    d='Противоположные цвета — максимальный контраст: '+r.map(function(c){return c.name;}).join(' + ');
+
+                    r = [ITTEN_WHEEL[idx], ITTEN_WHEEL[(idx+6)%12]];
+
+                    t = 'Комплементарный';
+
+                    d = 'Противоположные цвета — максимальный контраст: ' + r.map(function(c){return c.name;}).join(' + ');
+
                     break;
+
                 case 'analogous':
-                    r=[ITTEN_WHEEL[idx],ITTEN_WHEEL[(idx+1)%12],ITTEN_WHEEL[(idx+2)%12]];
-                    t='Аналогичный';
-                    d='Соседние цвета — мягкая гармония: '+r.map(function(c){return c.name;}).join(' + ');
+
+                    r = [ITTEN_WHEEL[idx], ITTEN_WHEEL[(idx+1)%12], ITTEN_WHEEL[(idx+2)%12]];
+
+                    t = 'Аналогичный';
+
+                    d = 'Соседние цвета — мягкая гармония: ' + r.map(function(c){return c.name;}).join(' + ');
+
                     break;
+
                 case 'triadic':
-                    r=[ITTEN_WHEEL[idx],ITTEN_WHEEL[(idx+4)%12],ITTEN_WHEEL[(idx+8)%12]];
-                    t='Триада';
-                    d='Три цвета на равном расстоянии: '+r.map(function(c){return c.name;}).join(' + ');
+
+                    r = [ITTEN_WHEEL[idx], ITTEN_WHEEL[(idx+4)%12], ITTEN_WHEEL[(idx+8)%12]];
+
+                    t = 'Триада';
+
+                    d = 'Три цвета на равном расстоянии: ' + r.map(function(c){return c.name;}).join(' + ');
+
                     break;
+
                 case 'split':
-                    r=[ITTEN_WHEEL[idx],ITTEN_WHEEL[(idx+5)%12],ITTEN_WHEEL[(idx+7)%12]];
-                    t='Расщеплённый комплементарный';
-                    d='Основной + 2 соседних к противоположному: '+r.map(function(c){return c.name;}).join(' + ');
+
+                    r = [ITTEN_WHEEL[idx], ITTEN_WHEEL[(idx+5)%12], ITTEN_WHEEL[(idx+7)%12]];
+
+                    t = 'Расщеплённый комплементарный';
+
+                    d = 'Основной + 2 соседних к противоположному: ' + r.map(function(c){return c.name;}).join(' + ');
+
                     break;
+
                 case 'monochrome':
-                    var dk=Object.assign({},base,{light:Math.max(20,base.light-20),name:base.name+' (тёмный)'});
-                    var lt=Object.assign({},base,{light:Math.min(85,base.light+20),name:base.name+' (светлый)'});
-                    r=[base,dk,lt]; t='Монохром'; d='Один цвет в разных оттенках';
+
+                    var dk = Object.assign({}, base, {light: Math.max(20, base.light-20), name: base.name + ' (тёмный)'});
+
+                    var lt = Object.assign({}, base, {light: Math.min(85, base.light+20), name: base.name + ' (светлый)'});
+
+                    r = [base, dk, lt];
+
+                    t = 'Монохром';
+
+                    d = 'Один цвет в разных оттенках';
+
                     break;
+
                 case 'warm':
-                    r=ITTEN_WHEEL.filter(function(c){return c.hue<=60;}).slice(0,3);
-                    t='Тёплая гамма'; d='Тёплые цвета — уютная гармония';
+
+                    r = ITTEN_WHEEL.filter(function(c){return c.hue <= 60;}).slice(0, 3);
+
+                    t = 'Тёплая гамма';
+
+                    d = 'Тёплые цвета — уютная гармония';
+
                     break;
+
                 case 'cold':
-                    r=ITTEN_WHEEL.filter(function(c){return c.hue>=175&&c.hue<=320;}).slice(0,3);
-                    t='Холодная гамма'; d='Холодные цвета — спокойная гармония';
+
+                    r = ITTEN_WHEEL.filter(function(c){return c.hue >= 175 && c.hue <= 320;}).slice(0, 3);
+
+                    t = 'Холодная гамма';
+
+                    d = 'Холодные цвета — спокойная гармония';
+
                     break;
+
                 default:
-                    var types=['complementary','analogous','triadic','split','monochrome'];
-                    return getHarmonyColors(baseKey,types[Math.floor(Math.random()*types.length)]);
+
+                    var types = ['complementary','analogous','triadic','split','monochrome'];
+
+                    return getHarmonyColors(baseKey, types[Math.floor(Math.random() * types.length)]);
+
             }
-            return {type:t,description:d,colors:r};
+
+ 
+
+            return { type: t, description: d, colors: r };
+
         }
 
-        var items = JSON.parse(localStorage.getItem('items')||'[]');
-        var capsules = JSON.parse(localStorage.getItem('capsules')||'[]');
+ 
+
+        // ====== ДАННЫЕ ======
+
+        var items = JSON.parse(localStorage.getItem('items') || '[]');
+
+        var capsules = JSON.parse(localStorage.getItem('capsules') || '[]');
+
         var currentFilter = 'Все';
 
+ 
+
         function save() {
-            localStorage.setItem('items',JSON.stringify(items));
-            localStorage.setItem('capsules',JSON.stringify(capsules));
-        }
 
-        function showPage(page,btn) {
-            document.querySelectorAll('.bottom-nav button').forEach(function(b){b.classList.remove('active');});
-            if(btn) btn.classList.add('active');
-            document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active');});
-            var t=document.getElementById('page-'+page);
-            if(t) t.classList.add('active');
-            if(page==='home'){updateStats();renderRecentItems();renderColorWheel();}
-            if(page==='wardrobe') renderItems();
-            if(page==='capsules') renderCapsules();
-        }
+            try {
 
-        function showAdd() {
-            var active=document.querySelector('.bottom-nav button.active .nav-label');
-            if(!active) return;
-            if(active.textContent==='Капсулы'){document.querySelector('.btn-auto').scrollIntoView({behavior:'smooth'});}
-            else{openAddItem();}
-        }
+                localStorage.setItem('items', JSON.stringify(items));
 
-        function updateStats() {
-            document.getElementById('statItems').textContent=items.length;
-            document.getElementById('statCapsules').textContent=capsules.length;
-            var cats={};items.forEach(function(i){cats[i.category]=true;});
-            document.getElementById('statCategories').textContent=Object.keys(cats).length;
-        }
+                localStorage.setItem('capsules', JSON.stringify(capsules));
 
-        function renderRecentItems() {
-            var c=document.getElementById('recentItems');
-            var recent=items.slice(-3).reverse();
-            if(recent.length===0){c.innerHTML='<div class="empty"><div class="icon">👕</div>Добавьте первую вещь!</div>';return;}
-            c.innerHTML=recent.map(function(item) {
-                var ph=item.photo?'<img src="'+item.photo+'" alt="">':'<div class="no-photo"></div>';
-                var co=getColorByKey(item.color);
-                return '<div class="item-card">'+ph+'<div class="item-info"><div class="name">'+item.name+'</div><div class="meta">🎨 '+co.name+' | 📂 '+item.category+'</div></div></div>';
-            }).join('');
-        }
+            } catch(e) {
 
-        function renderItems() {
-            var container=document.getElementById('itemsList');
-            var search=(document.getElementById('searchInput').value||'').toLowerCase();
-            var filtered=items.filter(function(item) {
-                var mc=(currentFilter==='Все')||(item.category===currentFilter);
-                var ms=!search||item.name.toLowerCase().indexOf(search)!==-1;
-                return mc&&ms;
-            });
-            if(filtered.length===0){container.innerHTML='<div class="empty"><div class="icon">👕</div>Ничего не найдено</div>';return;}
-            container.innerHTML=filtered.map(function(item) {
-                var ph=item.photo?'<img src="'+item.photo+'" alt="">':'<div class="no-photo"></div>';
-                var co=getColorByKey(item.color);
-                var seasons=(item.seasons&&item.seasons.length>0)?item.seasons.join(', '):'—';
-                var desc=item.description?'<div class="meta">📝 '+item.description+'</div>':'';
-                return '<div class="item-card">'+ph+'<div class="item-info"><div class="name">'+item.name+'</div><div class="meta">🎨 '+co.name+' | 📂 '+item.category+'</div><div class="meta">🌤 '+seasons+'</div>'+desc+'</div><button class="btn-delete" onclick="deleteItem('+item.id+')">🗑</button></div>';
-            }).join('');
-        }
+                alert('⚠️ Память переполнена! Удалите старые вещи с большими фото.');
 
-        function filterByCategory(cat,btn) {
-            currentFilter=cat;
-            document.querySelectorAll('.filter-chip').forEach(function(b){b.classList.remove('active');});
-            if(btn) btn.classList.add('active');
-            renderItems();
-        }
-
-        function openAddItem(){document.getElementById('modalAddItem').classList.add('show');}
-        function closeAddItem(){document.getElementById('modalAddItem').classList.remove('show');}
-        function openAddCapsule(){renderCapsuleItems();document.getElementById('modalAddCapsule').classList.add('show');}
-        function closeAddCapsule(){document.getElementById('modalAddCapsule').classList.remove('show');}
-
-        function renderColorWheel() {
-            var wheel=document.getElementById('colorWheel');
-            wheel.innerHTML=ITTEN_WHEEL.map(function(c) {
-                return '<div style="width:32px;height:32px;border-radius:50%;background:'+colorToCSS(c)+';border:2px solid white;box-shadow:0 1px 3px rgba(0,0,0,0.2);" title="'+c.name+'"></div>';
-            }).join('');
-            var achro=document.getElementById('achromaticRow');
-            achro.innerHTML=ACHROMATIC.map(function(c) {
-                return '<div style="width:32px;height:32px;border-radius:50%;background:'+colorToCSS(c)+';border:2px solid white;box-shadow:0 1px 3px rgba(0,0,0,0.2);" title="'+c.name+'"></div>';
-            }).join('');
-        }
-
-        function generateAutoCapsule() {
-            if(items.length===0){document.getElementById('autoResult').innerHTML='<div class="empty"><div class="icon">👕</div>Сначала добавьте вещи!</div>';return;}
-            var season=document.getElementById('autoSeason').value;
-            var harmonyType=document.getElementById('autoHarmony').value;
-            var targetCount=parseInt(document.getElementById('autoCount').value);
-            var seasonalItems=items.filter(function(item){if(season==='Всесезонная')return true;return item.seasons&&item.seasons.indexOf(season)!==-1;});
-            if(seasonalItems.length===0)seasonalItems=items;
-            var chromatic=seasonalItems.filter(function(i){return !isAchromatic(i.color);});
-            var baseKey=chromatic.length>0?chromatic[Math.floor(Math.random()*chromatic.length)].color:ITTEN_WHEEL[Math.floor(Math.random()*ITTEN_WHEEL.length)].key;
-            var harmony=getHarmonyColors(baseKey,harmonyType);
-            var harmonyKeys=harmony.colors.map(function(c){return c.key;});
-            var matched=seasonalItems.filter(function(item){return harmonyKeys.indexOf(item.color)!==-1||isAchromatic(item.color);});
-            if(matched.length<targetCount){var extra=seasonalItems.filter(function(i){return matched.indexOf(i)===-1&&isAchromatic(i.color);});matched=matched.concat(extra);}
-            if(matched.length<targetCount){var more=seasonalItems.filter(function(i){return matched.indexOf(i)===-1;});matched=matched.concat(more);}
-            ['Верх','Низ','Обувь'].forEach(function(cat){var has=matched.some(function(i){return i.category===cat;});if(!has){var found=seasonalItems.find(function(i){return i.category===cat;});if(found&&matched.indexOf(found)===-1)matched.unshift(found);}});
-            matched=matched.slice(0,Math.max(targetCount,5));
-            var seasonName=season==='Всесезонная'?'Универсальная':season;
-            var capsuleName=seasonName+' — '+harmony.type;
-            renderAutoResult(matched,harmony,capsuleName,season);
-        }
-
-        function renderAutoResult(matchedItems,harmony,capsuleName,season) {
-            var colorsHTML=harmony.colors.map(function(c) {
-                return '<div style="width:28px;height:28px;border-radius:50%;background:'+colorToCSS(c)+';border:2px solid white;box-shadow:0 1px 3px rgba(0,0,0,0.15);" title="'+c.name+'"></div>';
-            }).join('');
-            var itemsHTML=matchedItems.map(function(item) {
-                var photoHTML=item.photo?'<img src="'+item.photo+'" alt="">':'<div class="no-photo"></div>';
-                var c=getColorByKey(item.color);
-                return '<div class="item-row">'+photoHTML+'<div class="info"><div class="n">'+item.name+'</div><div class="m">📂 '+item.category+' | 🎨 '+c.name+'</div></div><div style="width:20px;height:20px;border-radius:50%;background:'+colorToCSS(c)+';"></div></div>';
-            }).join('');
-            document.getElementById('autoResult').innerHTML='<div class="auto-capsule"><h3>🤖 '+capsuleName+'</h3><div class="harmony-name">🎨 '+harmony.type+'</div><div style="display:flex;gap:6px;margin:8px 0;flex-wrap:wrap;">'+colorsHTML+'</div><div class="reason">'+harmony.description+'<br>Сезон: '+season+' | Вещей: '+matchedItems.length+'</div>'+itemsHTML+'<div class="buttons"><button class="btn-save-auto" onclick="saveAutoCapsule(\''+capsuleName+'\',\''+season+'\')">💾 Сохранить</button><button class="btn-regen" onclick="generateAutoCapsule()">🔄 Другой вариант</button></div></div>';
-            window.autoCapsuleItems=matchedItems;
-        }
-
-        function saveAutoCapsule(name,season) {
-            if(!window.autoCapsuleItems||window.autoCapsuleItems.length===0){alert('Нет данных');return;}
-            capsules.push({id:Date.now(),name:name,season:season,items:window.autoCapsuleItems.map(function(i){return i.id;}),created:new Date().toLocaleDateString('ru-RU')});
-            save();renderCapsules();updateStats();
-            alert('✅ Капсула «'+name+'» сохранена!');
-        }
-
-        function saveItem() {
-            var name=document.getElementById('itemName').value.trim();
-            if(!name){alert('Введите название!');return;}
-            var category=document.getElementById('itemCategory').value;
-            var color=document.getElementById('itemColor').value;
-            var desc=document.getElementById('itemDesc').value.trim();
-            var seasons=[];
-            document.querySelectorAll('#seasonsGroup input:checked').forEach(function(cb){seasons.push(cb.value);});
-            var photoInput=document.getElementById('itemPhoto');
-
-            function finish(photoData) {
-                items.push({id:Date.now(),name:name,category:category,color:color,seasons:seasons,description:desc,photo:photoData});
-                save();closeAddItem();updateStats();renderItems();renderRecentItems();
-                document.getElementById('itemName').value='';
-                document.getElementById('itemDesc').value='';
-                document.querySelectorAll('#seasonsGroup input').forEach(function(cb){cb.checked=false;});
-                document.getElementById('itemPhoto').value='';
-                var p=document.getElementById('photoPreview');if(p)p.style.display='none';
             }
 
-            if(photoInput.files[0]){var r=new FileReader();r.onload=function(e){finish(e.target.result);};r.readAsDataURL(photoInput.files[0]);}
-            else{finish(null);}
         }
+
+ 
+
+        // ====== СЖАТИЕ ФОТО ======
+
+        function resizePhoto(dataUrl, maxSize, quality) {
+
+            return new Promise(function(resolve) {
+
+                var img = new Image();
+
+                img.onload = function() {
+
+                    var canvas = document.createElement('canvas');
+
+                    var w = img.width;
+
+                    var h = img.height;
+
+ 
+
+                    if (w > maxSize) {
+
+                        h = Math.round(h * maxSize / w);
+
+                        w = maxSize;
+
+                    }
+
+                    if (h > maxSize) {
+
+                        w = Math.round(w * maxSize / h);
+
+                        h = maxSize;
+
+                    }
+
+ 
+
+                    canvas.width = w;
+
+                    canvas.height = h;
+
+                    canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+
+                    resolve(canvas.toDataURL('image/jpeg', quality));
+
+                };
+
+                img.src = dataUrl;
+
+            });
+
+        }
+
+ 
+
+        // ====== НАВИГАЦИЯ ======
+
+        function showPage(page, btn) {
+
+            document.querySelectorAll('.bottom-nav button').forEach(function(b) {
+
+                b.classList.remove('active');
+
+            });
+
+            if (btn) btn.classList.add('active');
+
+ 
+
+            document.querySelectorAll('.page').forEach(function(p) {
+
+                p.classList.remove('active');
+
+            });
+
+            var t = document.getElementById('page-' + page);
+
+            if (t) t.classList.add('active');
+
+ 
+
+            if (page === 'home') { updateStats(); renderRecentItems(); renderColorWheel(); }
+
+            if (page === 'wardrobe') renderItems();
+
+            if (page === 'capsules') renderCapsules();
+
+        }
+
+ 
+
+        function showAdd() {
+
+            var active = document.querySelector('.bottom-nav button.active .nav-label');
+
+            if (!active) return;
+
+            if (active.textContent === 'Капсулы') {
+
+                document.querySelector('.btn-auto').scrollIntoView({ behavior: 'smooth' });
+
+            } else {
+
+                openAddItem();
+
+            }
+
+        }
+
+ 
+
+        // ====== СТАТИСТИКА ======
+
+        function updateStats() {
+
+            document.getElementById('statItems').textContent = items.length;
+
+            document.getElementById('statCapsules').textContent = capsules.length;
+
+            var cats = {};
+
+            items.forEach(function(i) { cats[i.category] = true; });
+
+            document.getElementById('statCategories').textContent = Object.keys(cats).length;
+
+        }
+
+ 
+
+        // ====== РЕНДЕР ======
+
+        function renderRecentItems() {
+
+            var c = document.getElementById('recentItems');
+
+            var recent = items.slice(-3).reverse();
+
+            if (recent.length === 0) {
+
+                c.innerHTML = '<div class="empty"><div class="icon">👕</div>Добавьте первую вещь!</div>';
+
+                return;
+
+            }
+
+            c.innerHTML = recent.map(function(item) {
+
+                var ph = item.photo ? '<img src="' + item.photo + '" alt="">' : '<div class="no-photo"></div>';
+
+                var co = getColorByKey(item.color);
+
+                return '<div class="item-card">' + ph +
+
+                    '<div class="item-info"><div class="name">' + item.name + '</div>' +
+
+                    '<div class="meta">🎨 ' + co.name + ' | 📂 ' + item.category + '</div></div></div>';
+
+            }).join('');
+
+        }
+
+ 
+
+        function renderItems() {
+
+            var container = document.getElementById('itemsList');
+
+            var search = (document.getElementById('searchInput').value || '').toLowerCase();
+
+            var filtered = items.filter(function(item) {
+
+                var mc = (currentFilter === 'Все') || (item.category === currentFilter);
+
+                var ms = !search || item.name.toLowerCase().indexOf(search) !== -1;
+
+                return mc && ms;
+
+            });
+
+            if (filtered.length === 0) {
+
+                container.innerHTML = '<div class="empty"><div class="icon">👕</div>Ничего не найдено</div>';
+
+                return;
+
+            }
+
+            container.innerHTML = filtered.map(function(item) {
+
+                var ph = item.photo ? '<img src="' + item.photo + '" alt="">' : '<div class="no-photo"></div>';
+
+                var co = getColorByKey(item.color);
+
+                var seasons = (item.seasons && item.seasons.length > 0) ? item.seasons.join(', ') : '—';
+
+                var desc = item.description ? '<div class="meta">📝 ' + item.description + '</div>' : '';
+
+                return '<div class="item-card">' + ph +
+
+                    '<div class="item-info"><div class="name">' + item.name + '</div>' +
+
+                    '<div class="meta">🎨 ' + co.name + ' | 📂 ' + item.category + '</div>' +
+
+                    '<div class="meta">🌤 ' + seasons + '</div>' + desc + '</div>' +
+
+                    '<button class="btn-delete" onclick="deleteItem(' + item.id + ')">🗑</button></div>';
+
+            }).join('');
+
+        }
+
+ 
+
+        function filterByCategory(cat, btn) {
+
+            currentFilter = cat;
+
+            document.querySelectorAll('.filter-chip').forEach(function(b) {
+
+                b.classList.remove('active');
+
+            });
+
+            if (btn) btn.classList.add('active');
+
+            renderItems();
+
+        }
+
+ 
+
+        // ====== МОДАЛКИ ======
+
+        function openAddItem() {
+
+            document.getElementById('modalAddItem').classList.add('show');
+
+        }
+
+ 
+
+        function closeAddItem() {
+
+            document.getElementById('modalAddItem').classList.remove('show');
+
+        }
+
+ 
+
+        function openAddCapsule() {
+
+            renderCapsuleItems();
+
+            document.getElementById('modalAddCapsule').classList.add('show');
+
+        }
+
+ 
+
+        function closeAddCapsule() {
+
+            document.getElementById('modalAddCapsule').classList.remove('show');
+
+        }
+
+ 
+
+        // ====== ЦВЕТОВОЙ КРУГ ======
+
+        function renderColorWheel() {
+
+            var wheel = document.getElementById('colorWheel');
+
+            wheel.innerHTML = ITTEN_WHEEL.map(function(c) {
+
+                return '<div style="width:32px;height:32px;border-radius:50%;background:' + colorToCSS(c) + ';border:2px solid white;box-shadow:0 1px 3px rgba(0,0,0,0.2);" title="' + c.name + '"></div>';
+
+            }).join('');
+
+ 
+
+            var achro = document.getElementById('achromaticRow');
+
+            achro.innerHTML = ACHROMATIC.map(function(c) {
+
+                return '<div style="width:32px;height:32px;border-radius:50%;background:' + colorToCSS(c) + ';border:2px solid white;box-shadow:0 1px 3px rgba(0,0,0,0.2);" title="' + c.name + '"></div>';
+
+            }).join('');
+
+        }
+
+ 
+
+        // ====== АВТОПОДБОР КАПСУЛЫ ======
+
+        function generateAutoCapsule() {
+
+            if (items.length === 0) {
+
+                document.getElementById('autoResult').innerHTML = '<div class="empty"><div class="icon">👕</div>Сначала добавьте вещи!</div>';
+
+                return;
+
+            }
+
+ 
+
+            var season = document.getElementById('autoSeason').value;
+
+            var harmonyType = document.getElementById('autoHarmony').value;
+
+            var targetCount = parseInt(document.getElementById('autoCount').value);
+
+ 
+
+            var seasonalItems = items.filter(function(item) {
+
+                if (season === 'Всесезонная') return true;
+
+                return item.seasons && item.seasons.indexOf(season) !== -1;
+
+            });
+
+            if (seasonalItems.length === 0) seasonalItems = items;
+
+ 
+
+            var chromatic = seasonalItems.filter(function(i) { return !isAchromatic(i.color); });
+
+            var baseKey = chromatic.length > 0
+
+                ? chromatic[Math.floor(Math.random() * chromatic.length)].color
+
+                : ITTEN_WHEEL[Math.floor(Math.random() * ITTEN_WHEEL.length)].key;
+
+ 
+
+            var harmony = getHarmonyColors(baseKey, harmonyType);
+
+            var harmonyKeys = harmony.colors.map(function(c) { return c.key; });
+
+ 
+
+            var matched = seasonalItems.filter(function(item) {
+
+                return harmonyKeys.indexOf(item.color) !== -1 || isAchromatic(item.color);
+
+            });
+
+ 
+
+            if (matched.length < targetCount) {
+
+                var extra = seasonalItems.filter(function(i) {
+
+                    return matched.indexOf(i) === -1 && isAchromatic(i.color);
+
+                });
+
+                matched = matched.concat(extra);
+
+            }
+
+            if (matched.length < targetCount) {
+
+                var more = seasonalItems.filter(function(i) {
+
+                    return matched.indexOf(i) === -1;
+
+                });
+
+                matched = matched.concat(more);
+
+            }
+
+ 
+
+            ['Верх','Низ','Обувь'].forEach(function(cat) {
+
+                var has = matched.some(function(i) { return i.category === cat; });
+
+                if (!has) {
+
+                    var found = seasonalItems.find(function(i) { return i.category === cat; });
+
+                    if (found && matched.indexOf(found) === -1) matched.unshift(found);
+
+                }
+
+            });
+
+ 
+
+            matched = matched.slice(0, Math.max(targetCount, 5));
+
+ 
+
+            var seasonName = season === 'Всесезонная' ? 'Универсальная' : season;
+
+            var capsuleName = seasonName + ' — ' + harmony.type;
+
+ 
+
+            renderAutoResult(matched, harmony, capsuleName, season);
+
+        }
+
+ 
+
+        function renderAutoResult(matchedItems, harmony, capsuleName, season) {
+
+            var colorsHTML = harmony.colors.map(function(c) {
+
+                return '<div style="width:28px;height:28px;border-radius:50%;background:' + colorToCSS(c) + ';border:2px solid white;box-shadow:0 1px 3px rgba(0,0,0,0.15);" title="' + c.name + '"></div>';
+
+            }).join('');
+
+ 
+
+            var itemsHTML = matchedItems.map(function(item) {
+
+                var photoHTML = item.photo ? '<img src="' + item.photo + '" alt="">' : '<div class="no-photo"></div>';
+
+                var c = getColorByKey(item.color);
+
+                return '<div class="item-row">' + photoHTML +
+
+                    '<div class="info"><div class="n">' + item.name + '</div>' +
+
+                    '<div class="m">📂 ' + item.category + ' | 🎨 ' + c.name + '</div></div>' +
+
+                    '<div style="width:20px;height:20px;border-radius:50%;background:' + colorToCSS(c) + ';"></div></div>';
+
+            }).join('');
+
+ 
+
+            document.getElementById('autoResult').innerHTML =
+
+                '<div class="auto-capsule">' +
+
+                    '<h3>🤖 ' + capsuleName + '</h3>' +
+
+                    '<div class="harmony-name">🎨 ' + harmony.type + '</div>' +
+
+                    '<div style="display:flex;gap:6px;margin:8px 0;flex-wrap:wrap;">' + colorsHTML + '</div>' +
+
+                    '<div class="reason">' + harmony.description + '<br>Сезон: ' + season + ' | Вещей: ' + matchedItems.length + '</div>' +
+
+                    itemsHTML +
+
+                    '<div class="buttons">' +
+
+                        '<button class="btn-save-auto" onclick="saveAutoCapsule(\'' + capsuleName + '\',\'' + season + '\')">💾 Сохранить</button>' +
+
+                        '<button class="btn-regen" onclick="generateAutoCapsule()">🔄 Другой вариант</button>' +
+
+                    '</div>' +
+
+                '</div>';
+
+ 
+
+            window.autoCapsuleItems = matchedItems;
+
+        }
+
+ 
+
+        function saveAutoCapsule(name, season) {
+
+            if (!window.autoCapsuleItems || window.autoCapsuleItems.length === 0) {
+
+                alert('Нет данных');
+
+                return;
+
+            }
+
+            capsules.push({
+
+                id: Date.now(),
+
+                name: name,
+
+                season: season,
+
+                items: window.autoCapsuleItems.map(function(i) { return i.id; }),
+
+                created: new Date().toLocaleDateString('ru-RU')
+
+            });
+
+            save();
+
+            renderCapsules();
+
+            updateStats();
+
+            alert('✅ Капсула «' + name + '» сохранена!');
+
+        }
+
+ 
+
+        // ====== СОХРАНЕНИЕ ВЕЩИ (С СЖАТИЕМ ФОТО) ======
+
+        function saveItem() {
+
+            var name = document.getElementById('itemName').value.trim();
+
+            if (!name) { alert('Введите название!'); return; }
+
+ 
+
+            var category = document.getElementById('itemCategory').value;
+
+            var color = document.getElementById('itemColor').value;
+
+            var desc = document.getElementById('itemDesc').value.trim();
+
+ 
+
+            var seasons = [];
+
+            document.querySelectorAll('#seasonsGroup input:checked').forEach(function(cb) {
+
+                seasons.push(cb.value);
+
+            });
+
+ 
+
+            var photoInput = document.getElementById('itemPhoto');
+
+ 
+
+            function finish(photoData) {
+
+                items.push({
+
+                    id: Date.now(),
+
+                    name: name,
+
+                    category: category,
+
+                    color: color,
+
+                    seasons: seasons,
+
+                    description: desc,
+
+                    photo: photoData
+
+                });
+
+                save();
+
+                closeAddItem();
+
+                updateStats();
+
+                renderItems();
+
+                renderRecentItems();
+
+ 
+
+                document.getElementById('itemName').value = '';
+
+                document.getElementById('itemDesc').value = '';
+
+                document.querySelectorAll('#seasonsGroup input').forEach(function(cb) {
+
+                    cb.checked = false;
+
+                });
+
+                document.getElementById('itemPhoto').value = '';
+
+                var p = document.getElementById('photoPreview');
+
+                if (p) p.style.display = 'none';
+
+            }
+
+ 
+
+            if (photoInput.files[0]) {
+
+                var r = new FileReader();
+
+                r.onload = function(e) {
+
+                    // СЖИМАЕМ ФОТО ДО 300px!
+
+                    resizePhoto(e.target.result, 300, 0.5).then(function(smallPhoto) {
+
+                        finish(smallPhoto);
+
+                    });
+
+                };
+
+                r.readAsDataURL(photoInput.files[0]);
+
+            } else {
+
+                finish(null);
+
+            }
+
+        }
+
+ 
+
+        // ====== СОХРАНЕНИЕ КАПСУЛЫ ======
 
         function saveCapsule() {
-            var name=document.getElementById('capName').value.trim();
-            if(!name){alert('Введите название!');return;}
-            var season=document.getElementById('capSeason').value;
-            var selected=[];
-            document.querySelectorAll('#capItemsList input:checked').forEach(function(cb){selected.push(parseInt(cb.value));});
-            if(selected.length===0){alert('Выберите хотя бы одну вещь!');return;}
-            capsules.push({id:Date.now(),name:name,season:season,items:selected,created:new Date().toLocaleDateString('ru-RU')});
-            save();closeAddCapsule();renderCapsules();updateStats();
-            document.getElementById('capName').value='';
-            document.querySelectorAll('#capItemsList input').forEach(function(cb){cb.checked=false;});
+
+            var name = document.getElementById('capName').value.trim();
+
+            if (!name) { alert('Введите название!'); return; }
+
+            var season = document.getElementById('capSeason').value;
+
+            var selected = [];
+
+            document.querySelectorAll('#capItemsList input:checked').forEach(function(cb) {
+
+                selected.push(parseInt(cb.value));
+
+            });
+
+            if (selected.length === 0) { alert('Выберите хотя бы одну вещь!'); return; }
+
+ 
+
+            capsules.push({
+
+                id: Date.now(),
+
+                name: name,
+
+                season: season,
+
+                items: selected,
+
+                created: new Date().toLocaleDateString('ru-RU')
+
+            });
+
+            save();
+
+            closeAddCapsule();
+
+            renderCapsules();
+
+            updateStats();
+
+ 
+
+            document.getElementById('capName').value = '';
+
+            document.querySelectorAll('#capItemsList input').forEach(function(cb) {
+
+                cb.checked = false;
+
+            });
+
         }
+
+ 
+
+        // ====== УДАЛЕНИЕ ======
 
         function deleteItem(id) {
-            if(confirm('Удалить вещь?')){items=items.filter(function(i){return i.id!==id;});save();updateStats();renderItems();renderRecentItems();}
+
+            if (confirm('Удалить вещь?')) {
+
+                items = items.filter(function(i) { return i.id !== id; });
+
+                save();
+
+                updateStats();
+
+                renderItems();
+
+                renderRecentItems();
+
+            }
+
         }
+
+ 
 
         function deleteCapsule(id) {
-            if(confirm('Удалить капсулу?')){capsules=capsules.filter(function(c){return c.id!==id;});save();renderCapsules();updateStats();}
+
+            if (confirm('Удалить капсулу?')) {
+
+                capsules = capsules.filter(function(c) { return c.id !== id; });
+
+                save();
+
+                renderCapsules();
+
+                updateStats();
+
+            }
+
         }
+
+ 
+
+        // ====== РЕНДЕР КАПСУЛ ======
 
         function renderCapsules() {
-            var c=document.getElementById('capsulesList');
-            if(capsules.length===0){c.innerHTML='<div class="empty"><div class="icon">🎁</div>Капсул пока нет</div>';return;}
-            c.innerHTML=capsules.map(function(cap) {
-                var capItems=items.filter(function(i){return cap.items.indexOf(i.id)!==-1;});
-                var itemsHTML=capItems.map(function(i) {
-                    var co=getColorByKey(i.color);
-                    return '<div>• '+i.name+' ('+i.category+') <span style="color:'+colorToCSS(co)+';">●</span></div>';
+
+            var c = document.getElementById('capsulesList');
+
+            if (capsules.length === 0) {
+
+                c.innerHTML = '<div class="empty"><div class="icon">🎁</div>Капсул пока нет</div>';
+
+                return;
+
+            }
+
+            c.innerHTML = capsules.map(function(cap) {
+
+                var capItems = items.filter(function(i) {
+
+                    return cap.items.indexOf(i.id) !== -1;
+
+                });
+
+                var itemsHTML = capItems.map(function(i) {
+
+                    var co = getColorByKey(i.color);
+
+                    return '<div>• ' + i.name + ' (' + i.category + ') <span style="color:' + colorToCSS(co) + ';">●</span></div>';
+
                 }).join('');
-                return '<div class="capsule-card"><div class="title">🎁 '+cap.name+'</div><div class="meta">🌤 '+cap.season+' | 📦 '+capItems.length+' вещей | 📅 '+cap.created+'</div><div class="capsule-items">'+itemsHTML+'</div><button class="btn-delete" style="margin-top:10px" onclick="deleteCapsule('+cap.id+')">🗑 Удалить</button></div>';
+
+                return '<div class="capsule-card">' +
+
+                    '<div class="title">🎁 ' + cap.name + '</div>' +
+
+                    '<div class="meta">🌤 ' + cap.season + ' | 📦 ' + capItems.length + ' вещей | 📅 ' + cap.created + '</div>' +
+
+                    '<div class="capsule-items">' + itemsHTML + '</div>' +
+
+                    '<button class="btn-delete" style="margin-top:10px" onclick="deleteCapsule(' + cap.id + ')">🗑 Удалить</button></div>';
+
             }).join('');
+
         }
+
+ 
+
+        // ====== ВЕЩИ ДЛЯ РУЧНОЙ КАПСУЛЫ ======
 
         function renderCapsuleItems() {
-            var c=document.getElementById('capItemsList');
-            if(items.length===0){c.innerHTML='<p style="color:#888;">Сначала добавьте вещи</p>';return;}
-            c.innerHTML=items.map(function(item) {
-                var th=item.photo?'<img src="'+item.photo+'" style="width:35px;height:35px;object-fit:cover;border-radius:6px;">':'<div style="width:35px;height:35px;background:#eee;border-radius:6px;"></div>';
-                var co=getColorByKey(item.color);
-                return '<label style="display:flex;align-items:center;gap:8px;padding:8px;border-bottom:1px solid #eee;"><input type="checkbox" value="'+item.id+'">'+th+'<div style="width:14px;height:14px;border-radius:50%;background:'+colorToCSS(co)+';"></div><span style="font-size:14px;">'+item.name+' ('+item.category+')</span></label>';
+
+            var c = document.getElementById('capItemsList');
+
+            if (items.length === 0) {
+
+                c.innerHTML = '<p style="color:#888;">Сначала добавьте вещи</p>';
+
+                return;
+
+            }
+
+            c.innerHTML = items.map(function(item) {
+
+                var th = item.photo
+
+                    ? '<img src="' + item.photo + '" style="width:35px;height:35px;object-fit:cover;border-radius:6px;">'
+
+                    : '<div style="width:35px;height:35px;background:#eee;border-radius:6px;"></div>';
+
+                var co = getColorByKey(item.color);
+
+                return '<label style="display:flex;align-items:center;gap:8px;padding:8px;border-bottom:1px solid #eee;">' +
+
+                    '<input type="checkbox" value="' + item.id + '">' + th +
+
+                    '<div style="width:14px;height:14px;border-radius:50%;background:' + colorToCSS(co) + ';"></div>' +
+
+                    '<span style="font-size:14px;">' + item.name + ' (' + item.category + ')</span></label>';
+
             }).join('');
+
         }
 
-        document.addEventListener('DOMContentLoaded',function() {
+ 
+
+        // ====== ПРЕВЬЮ ======
+
+        document.addEventListener('DOMContentLoaded', function() {
+
             renderColorWheel();
-            var photoInput=document.getElementById('itemPhoto');
-            if(photoInput){photoInput.addEventListener('change',function(e){var f=e.target.files[0];if(f){var r=new FileReader();r.onload=function(ev){var p=document.getElementById('photoPreview');p.src=ev.target.result;p.style.display='block';};r.readAsDataURL(f);}});}
-            var cs=document.getElementById('itemColor');
-            if(cs){cs.addEventListener('change',function(){var c=getColorByKey(this.value);document.getElementById('colorPreviewBox').innerHTML='<div class="dot" style="background:'+colorToCSS(c)+';"></div><span>'+c.name+'</span>';});cs.dispatchEvent(new Event('change'));}
+
+ 
+
+            var photoInput = document.getElementById('itemPhoto');
+
+            if (photoInput) {
+
+                photoInput.addEventListener('change', function(e) {
+
+                    var f = e.target.files[0];
+
+                    if (f) {
+
+                        var r = new FileReader();
+
+                        r.onload = function(ev) {
+
+                            // СЖИМАЕМ ПРЕВЬЮ!
+
+                            resizePhoto(ev.target.result, 200, 0.5).then(function(small) {
+
+                                var p = document.getElementById('photoPreview');
+
+                                p.src = small;
+
+                                p.style.display = 'block';
+
+                            });
+
+                        };
+
+                        r.readAsDataURL(f);
+
+                    }
+
+                });
+
+            }
+
+ 
+
+            var cs = document.getElementById('itemColor');
+
+            if (cs) {
+
+                cs.addEventListener('change', function() {
+
+                    var c = getColorByKey(this.value);
+
+                    document.getElementById('colorPreviewBox').innerHTML =
+
+                        '<div class="dot" style="background:' + colorToCSS(c) + ';"></div><span>' + c.name + '</span>';
+
+                });
+
+                cs.dispatchEvent(new Event('change'));
+
+            }
+
         });
 
-        window.onload=function(){renderColorWheel();updateStats();renderRecentItems();renderItems();renderCapsules();};
+ 
+
+        // ====== ИНИЦИАЛИЗАЦИЯ ======
+
+        window.onload = function() {
+
+            renderColorWheel();
+
+            updateStats();
+
+            renderRecentItems();
+
+            renderItems();
+
+            renderCapsules();
+
+        };
+
     </script>
+
 </body>
+
 </html>
